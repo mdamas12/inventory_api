@@ -47,20 +47,6 @@ class AuthController extends Controller
             ],201);
         }
 
-public function Register_customer(Request $request){
-
-     $data =  $request->validate([
-        'customer_type' => 'required|string|max:255',
-        'speciality' => 'required|string|max:255',
-        'plan_id' => 'required|integer',
-        'name_company' => 'required|string|max:255|unique:customers',
-        'treatment' => 'string|max:255',
-        'user_name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8',
-        'role' => 'required|string',
-    ]);
-}
 
 public function login(Request $request)
 {
