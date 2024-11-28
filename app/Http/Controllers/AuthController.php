@@ -48,49 +48,49 @@ class AuthController extends Controller
         }
 
 
-public function login(Request $request)
-{
+    public function login(Request $request)
+    {
 
-    $rules = [
-        'email' => 'required|string|email|max:100',
-        'password' => 'required|string',
-    ];
+        $rules = [
+            'email' => 'required|string|email|max:100',
+            'password' => 'required|string',
+        ];
 
-    $validator = Validator::make($request->all(), $rules);
-    if($validator->fails()){
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()->all()
+            ],400);
+
+        }
+
+        if(!Auth::attempt($request->only('email','password'))){
+            return response()->json([
+                'status' => false,
+                'errors' => ['Unauthorized']
+            ],401);
+        }
+        $user = User::where('email', $request->email)->first();
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+
         return response()->json([
-            'status' => false,
-            'errors' => $validator->errors()->all()
-        ],400);
-
+            'status' => true,
+            'message' => 'User Logged in successfully',
+            'access_token' => $token, 
+            'token_type' => 'Bearer',
+            'data'=> $user 
+        ],200);
     }
 
-    if(!Auth::attempt($request->only('email','password'))){
+    public function logout(){
+        atth()->user()->tokens()->delete();
         return response()->json([
-            'status' => false,
-            'errors' => ['Unauthorized']
-        ],401);
+            'status' => true,
+            'message' => 'User Logged out successfully',
+
+        ],200);
     }
-    $user = User::where('email', $request->email)->first();
-
-    $token = $user->createToken('auth_token')->plainTextToken;
-
-
-    return response()->json([
-        'status' => true,
-        'message' => 'User Logged in successfully',
-        'access_token' => $token, 
-        'token_type' => 'Bearer',
-        'data'=> $user 
-    ],200);
-}
-
- public function logout(){
-    atth()->user()->tokens()->delete();
-    return response()->json([
-        'status' => true,
-        'message' => 'User Logged out successfully',
-
-    ],200);
- }
 }
