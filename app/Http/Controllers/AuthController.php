@@ -20,12 +20,12 @@ class AuthController extends Controller
                 'password' => 'required|string|min:8',
                 'role' => 'required|string',
             ];
-  
-            $validator = Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), $rules, ['required' => 'El Campo :attribute es requerido','unique' => 'El email ya esta registrado']);
+          
             if($validator->fails()){
                 return response()->json([
                     'status' => false,
-                    'errors' => $validator->erros()->all()
+                    'errors' => $validator->errors()->all()
                 ],400);
 
             }
@@ -60,7 +60,7 @@ public function login(Request $request)
     if($validator->fails()){
         return response()->json([
             'status' => false,
-            'errors' => $validator->erros()->all()
+            'errors' => $validator->errors()->all()
         ],400);
 
     }
