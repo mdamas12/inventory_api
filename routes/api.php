@@ -16,9 +16,11 @@ Route::middleware('auth:sanctum')->group(function(){
      Route::resource('features', FeatureController::class);
      Route::resource('products', ProductController::class);
      Route::patch('products/updatestock/{id}',[ProductController::class, 'update_stock']);
-    //Route::post('plans/addmodule',[PlanDetailController::class, 'addModuleToplan']);
-    //Route::get('plans/listmodules/{plan}',[PlanDetailController::class, 'listModuleToplan']);
-    //Route::delete('plans/deletemodules/{plan}',[PlanDetailController::class, 'deleteModuleToplan']);
+     Route::get('products/listdetail/{id}',[DetailProductController::class, 'listDetail']);
+     Route::post('products/createdetail',[DetailProductController::class, 'createDetail']);
+     Route::put('products/updatedetail/{id}',[DetailProductController::class, 'updateDetail']);
+     Route::delete('products/deletedetail/{id}',[DetailProductController::class, 'destroyDetail']);
+
     Route::get('auth/logout', [AuthController::class, 'logout']);
 });
 

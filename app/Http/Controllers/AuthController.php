@@ -39,7 +39,7 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
-                'status' => true,
+                'status' => 201,
                 'message' => 'User registered successfully', 
                 'user' => $user, 
                 'access_token' => $token, 
@@ -59,16 +59,16 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), $rules);
         if($validator->fails()){
             return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()->all()
+                'status' => 400,
+                'message' => $validator->errors()->all()
             ],400);
 
         }
 
         if(!Auth::attempt($request->only('email','password'))){
             return response()->json([
-                'status' => false,
-                'errors' => ['Unauthorized']
+                'status' => 401,
+                'message' => ['User Unauthorized']
             ],401);
         }
         $user = User::where('email', $request->email)->first();
@@ -77,7 +77,7 @@ class AuthController extends Controller
 
 
         return response()->json([
-            'status' => true,
+            'status' => 200,
             'message' => 'User Logged in successfully',
             'access_token' => $token, 
             'token_type' => 'Bearer',

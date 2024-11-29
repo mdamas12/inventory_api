@@ -5,19 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Feature extends Model
+class DetailProduct extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    protected $table = 'features';
+    protected $table = 'detail_products';
     protected $fillable = [
-        'name',
+        'value',
         'description',
         'status',
     ];
 
-    public function detailProduct(){
-        return $this->hasMany(DetailProduct::class);
+    public function product(){
+        return $this->belongsTo(Product::class);
     }
 
+    public function feature(){
+        return $this->belongsTo(Feature::class);
+    }
 }
